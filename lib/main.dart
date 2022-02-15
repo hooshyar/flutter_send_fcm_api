@@ -40,12 +40,14 @@ class MyApp extends StatelessWidget {
               ElevatedButton(
                 child: Text('send a notif'),
                 onPressed: () {
+                  debugPrint(_tokenController.value.text);
                   _notificationsService.sendPushMessage(
                       tokens: [
                         _tokenController.value.text
                       ], // you can add mutltiple tokens here
                       title: "title",
-                      body: "body");
+                      body: "body",
+                      data: {'screen': 'users'});
                 },
               ),
             ],

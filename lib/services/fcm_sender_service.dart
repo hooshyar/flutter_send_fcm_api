@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class NotificationsService {
   //TODO: replace this with your own server serverKey, could be found from setting FCM section
-  final String serverKey = "replace your api with this string";
+  final String serverKey = "replace with your server key";
 
   // final String senderID = "214993471933";
 
@@ -12,13 +12,11 @@ class NotificationsService {
     required String token,
     required String title,
     required String body,
+    Map<String, dynamic>? data,
   }) {
     return jsonEncode({
       'to': token,
-      'data': {
-        'via': 'FlutterFire Cloud Messaging!!!',
-        'url': 'https://fcm.googleapis.com/fcm/send',
-      },
+      'data': data,
       "collapse_key": "type_a",
       'notification': {'title': title, 'body': body, 'sound': "default"},
       "priority": "high",
@@ -48,6 +46,7 @@ class NotificationsService {
     required List<String> tokens,
     required String title,
     required String body,
+    Map<String, dynamic>? data,
   }) async {
     for (int i = 0; i < tokens.length; i++) {
       try {
@@ -57,8 +56,8 @@ class NotificationsService {
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': 'key=$serverKey',
           },
-          body:
-              _constructFCMPayload(token: tokens[i], title: title, body: body),
+          body: _constructFCMPayload(
+              token: tokens[i], title: title, body: body, data: data),
         );
         print('FCM request for device sent!');
       } catch (e) {
